@@ -9,8 +9,8 @@ class Solution {
             int j = edge[1];
             map.putIfAbsent(i, new HashSet<>());
             map.get(i).add(j);
-            map.putIfAbsent(i, new HashSet<>());
-            map.get(i).add(j);
+            map.putIfAbsent(j, new HashSet<>());
+            map.get(j).add(i);
         }
         //store the result in int[], pass by reference
         int[] diameter = new int[]{0};
