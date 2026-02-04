@@ -38,7 +38,7 @@ class UnionFind{
 }
 class Solution {
     public int removeStones(int[][] stones) {
-        int offset = 10000;
+        int offset = 100000;
         UnionFind uf = new UnionFind();
         for (int[] stone: stones) {
             int x = stone[0];
