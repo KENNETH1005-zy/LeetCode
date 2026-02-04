@@ -25,26 +25,25 @@ class WordDictionary {
     }
     
     public boolean search(String word) {
-    return dfs(root, word, 0);
-}
+        return dfs(root, word, 0);
+    }
 
     private boolean dfs(TrieNode node, String word, int index) {
+        //find the next node
         if (index == word.length()) {
             return node.isEnd;
         }
-
+        //think it if it is . or just normal char
         char c = word.charAt(index);
-
         if (c == '.') {
-            // Try all possible children
-            for (int i = 0; i < 26; i++) {
-                if (node.neighbors[i] != null && dfs(node.neighbors[i], word, index + 1)) {
+            //find all possible neighbors
+            for (int i = 0; i< 26; i++) {
+                if (node.neighbors[i] != null && dfs(node.neighbors[i], word, index + 1)){
                     return true;
                 }
             }
             return false;
-        } else {
-            // Normal character
+        }else {
             int charIndex = c - 'a';
             if (node.neighbors[charIndex] == null) {
                 return false;
