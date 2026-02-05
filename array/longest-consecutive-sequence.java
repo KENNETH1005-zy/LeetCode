@@ -10,7 +10,7 @@ class UnionFind {
     public UnionFind(int[] nums){
         parents = new HashMap<>();
         sizes = new HashMap<>();
-        maxLength = 0;
+        maxLength = 1;
         for (int num: nums) {
             parents.put(num, num);
             sizes.put(num, 1);
@@ -45,7 +45,7 @@ class UnionFind {
 }
 class Solution {
     public int longestConsecutive(int[] nums) {
-        if (nums.length == 1) return 1;
+        if (nums.length == 0) return 0;
         UnionFind uf = new UnionFind(nums);
 
         for (int num: nums) {
