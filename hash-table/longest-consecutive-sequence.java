@@ -45,6 +45,7 @@ class UnionFind {
 }
 class Solution {
     public int longestConsecutive(int[] nums) {
+        if (nums.length == 1) return 1;
         UnionFind uf = new UnionFind(nums);
 
         for (int num: nums) {
