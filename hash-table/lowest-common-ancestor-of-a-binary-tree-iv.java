@@ -9,17 +9,22 @@
  */
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode[] nodes) {
-        return traverse(root, nodes);
+        return dfs(root, nodes);
     }
-
-    public TreeNode traverse(TreeNode root, TreeNode[] nodes) {
-        if(root == null) return null;
-        for(TreeNode node:nodes) {
-            if(root.val == node.val) return root;
+    public TreeNode dfs(TreeNode root, TreeNode[] nodes) {
+        //base case
+        if (root == null) return null;
+        //if root is equal to any of the nodes return the current root
+        for(TreeNode node: nodes) {
+            if (root.val == node.val) {
+                return root;
+            }
         }
-        TreeNode left = traverse(root.left, nodes);
-        TreeNode right = traverse(root.right, nodes);
-        if(left != null && right != null) return root;
-        return left != null ? left : right;
+        TreeNode left = dfs(root.left, nodes);
+        TreeNode right = dfs(root.right, nodes);
+        //if left and right are both not null, means current root is LCA
+        if (left != null && right != null) return root;
+        //any one of the node in left and right is not null, then give it to the prev recursion
+        return left == null ? right: left;
     }
 }
