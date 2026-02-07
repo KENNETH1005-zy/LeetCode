@@ -27,6 +27,7 @@ class Solution {
         //if boolean is true, add the inserVal in between and the next node is curr
         //move to the next
         //break if prev is head, means already iterate all the nodes in the circle and no valid result was found
+         // Case 3: No valid spot found, insert at any position
         if (head == null) {
             Node node = new Node(insertVal);
             node.next = node;
@@ -37,11 +38,11 @@ class Solution {
         Node curr = prev.next;
 
         while (true) {
-            if (prev.val < curr.val) {
-                if (prev.val <= insertVal && insertVal <= curr.val) {
-                    flag = true;
-                }
-            }else {
+            
+            if (prev.val <= insertVal && insertVal <= curr.val) {
+                flag = true;
+            }
+            else if (prev.val > curr.val){
                 if (prev.val <= insertVal || insertVal <= curr.val) {
                     flag = true;
                 }
@@ -49,12 +50,14 @@ class Solution {
 
             if (flag) {
                 prev.next = new Node(insertVal, curr);
+                return head;
             }
             prev = curr;
             curr = curr.next;
             if (prev == head) break;
         }
+        // Case 3: No valid spot found, insert at any position
+        prev.next = new Node(insertVal, curr);
         return head;
-
     }
 }
