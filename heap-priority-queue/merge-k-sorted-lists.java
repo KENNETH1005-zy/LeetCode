@@ -10,27 +10,27 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        //create a min Heap
-        //add all nodes into it
-        //poll until empty
-        if (lists.length == 0) return null;
-        PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+        //add every first head node into the pq
+        //poll smallest everytime, if there is anything left in the list, add it
+        if (lists.length == 0 || lists[0] == null) return null;
+        PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
         for (ListNode list: lists) {
-            while (list != null) {
-                pq.add(list);
-                list = list.next;
-            }
-        }
-        if (pq.isEmpty()) {
-            return null;
+            if (list != null)pq.add(list);
         }
 
-        ListNode result = pq.poll();
-        ListNode pointer = result;
+        ListNode dummy = new ListNode();
+        //tracker for dummy head
+        ListNode tracker = dummy;
+        
         while (!pq.isEmpty()) {
-            pointer.next = pq.poll();
-            pointer = pointer.next;
+            ListNode smallest = pq.poll();
+            tracker.next = smallest;
+            tracker = tracker.next;
+
+            if (smallest.next != null) {
+                pq.add(smallest.next);
+            }
         }
-        return result;
+        return dummy.next;
     }
 }
