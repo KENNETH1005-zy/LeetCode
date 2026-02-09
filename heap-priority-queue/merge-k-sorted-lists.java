@@ -12,7 +12,7 @@ class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
         //add every first head node into the pq
         //poll smallest everytime, if there is anything left in the list, add it
-        if (lists.length == 0 || lists[0] == null) return null;
+        if (lists.length == 0 || lists == null) return null;
         PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
         for (ListNode list: lists) {
             if (list != null)pq.add(list);
