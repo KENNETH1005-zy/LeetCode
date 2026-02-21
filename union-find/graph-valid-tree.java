@@ -1,30 +1,47 @@
+//class UnionFind
+class UnionFind {
+    private int[] root;
+    //Constructor
+    public UnionFind(int n) {
+        root = new int[n];
+        for (int i = 0; i<n; i++) {
+            root[i] = i;
+        }
+    }
+
+    public int find(int num) {
+        if (root[num] == num) {
+            return root[num];
+        }
+        return find(root[num]);
+    }
+
+    //union function to find if the current two node belongs to the same parent
+    public boolean union(int A, int B) {
+        int parentA = find(A);
+        int parentB = find(B);
+
+        if (parentA == parentB) {
+            return false;
+        }
+        //else just make root of B is the parent of A
+        root[find(A)] = find(B);
+        return true;
+    }
+}
 class Solution {
     public boolean validTree(int n, int[][] edges) {
-        //use map to store the edge
-        //if the values of a and values of b has interjection
-        //return false
-        //after all return true
-        Map<Integer, Set<Integer>> map = new HashMap<>();
+        if (edges.length != n - 1) return false;
+        UnionFind uf = new UnionFind(n);
+
         for (int[] edge: edges) {
-            int a = edge[0];
-            int b = edge[1];
+            int A = edge[0];
+            int B = edge[1];
 
-            if (!map.containsKey(a)) {
-                map.put(a, new HashSet<>());
-            }
-            if (!map.containsKey(b)) {
-                map.put(b, new HashSet<>());
-            }
-            map.get(a).add(b);
-            map.get(b).add(a);
-
-            for (int single: map.get(a)) {
-                if (map.get(b).contains(single)) {
-                    return false;
-                }
+            if (!uf.union(A, B)) {
+                return false;
             }
         }
         return true;
-
     }
 }
