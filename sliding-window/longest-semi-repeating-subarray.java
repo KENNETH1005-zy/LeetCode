@@ -13,10 +13,13 @@ class Solution {
         int left = 0;
 
         int count = 0;
+
+        Set<Integer> set = new HashSet<>();
         for (int right = 0; right<nums.length; right++) {
             map.put(nums[right], map.getOrDefault(nums[right], 0) + 1);
-            if (map.get(nums[right]) > 1) {
+            if (map.get(nums[right]) > 1 && !set.contains(nums[right])) {
                 count += 1;
+                set.add(nums[right]);
             }
 
             while (count >k) {
@@ -27,6 +30,7 @@ class Solution {
                     if (map.get(nums[left]) == 0) {
                         map.remove(nums[left]);
                     }
+                    set.remove(nums[left]);
                 }
                 left++;
             }
