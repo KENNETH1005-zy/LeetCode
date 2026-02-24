@@ -16,7 +16,12 @@ class Solution {
             if (rem == 0) {
                 if (map.get(rem) % 2 == 1) return false;
                 
-            }else if ( rem < k - rem && map.get(rem) != map.get(k - rem)) return false;
+            }else if (!Objects.equals(
+                        map.get(rem),
+                        map.get(k - rem)
+            )){
+                return false;
+            }
         }
         return true;
     }
