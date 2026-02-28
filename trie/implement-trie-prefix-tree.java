@@ -1,51 +1,55 @@
-class TrieNode {
-    boolean isWord;
+//using trienode class
+class TrieNode{
+    //boolean to determin it is the end of the word
+    //map to store the children
+    boolean isEnd;
     Map<Character, TrieNode> children;
-    public TrieNode () {
-        this.isWord = false;
-        this.children = new HashMap<>();
+    public TrieNode(){
+        isEnd = false;
+        children = new HashMap<>();
     }
 }
 class Trie {
+    //use root as the first one in the trie
     TrieNode root;
     public Trie() {
-        this.root = new TrieNode();
+        root = new TrieNode();
     }
     
     public void insert(String word) {
-        //starting from root to iterate
+        //using the pointer of root
         TrieNode trieNode = root;
         char[] chars = word.toCharArray();
-
-        for (int i = 0; i< word.length(); i++) {
-            char ch = chars[i];
-            if (!trieNode.children.containsKey(ch)) {
-                trieNode.children.put(ch, new TrieNode());
+        for (char c: chars) {
+            if (!trieNode.children.containsKey(c)) {
+                trieNode.children.put(c, new TrieNode());
             }
-            //move the pointer to the next
-            trieNode = trieNode.children.get(ch);
+            //move the it's child node
+            trieNode = trieNode.children.get(c);
         }
-        trieNode.isWord = true;
+        trieNode.isEnd = true;
     }
     
     public boolean search(String word) {
         TrieNode trieNode = root;
-        for (char ch: word.toCharArray()) {
-            if (!trieNode.children.containsKey(ch)) {
+        for (char c: word.toCharArray()) {
+            if (!trieNode.children.containsKey(c)) {
                 return false;
             }
-            trieNode = trieNode.children.get(ch);
+            //move to next trieNode
+            trieNode = trieNode.children.get(c);
         }
-        return trieNode.isWord;
+        return trieNode.isEnd;
     }
     
     public boolean startsWith(String prefix) {
         TrieNode trieNode = root;
-        for (char ch: prefix.toCharArray()) {
-            if (!trieNode.children.containsKey(ch)) {
+
+        for (char c: prefix.toCharArray()) {
+            if (!trieNode.children.containsKey(c)) {
                 return false;
             }
-            trieNode = trieNode.children.get(ch);
+            trieNode = trieNode.children.get(c);
         }
         return true;
     }
