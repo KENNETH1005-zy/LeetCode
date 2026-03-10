@@ -10,29 +10,34 @@
  */
 class Solution {
     public int pairSum(ListNode head) {
-        //reverse the linked list for as the another list
-        //add up the twin
-        //remain the max along the way
-        //return the max
+        //using slow and fast pointers to not destroy the origianl list
+        //slow is the head of the second half
+        //reverse the second half
+        //add up the twins to find the max one
         int max = Integer.MIN_VALUE;
-        ListNode reverse = head;
-        ListNode prev = null;
-        int count = 0;
-        while (reverse != null) {
-            count++;
-            ListNode next = reverse.next;
-            reverse.next = prev;
-            prev = reverse;
-            reverse = next;
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        //now prev is the head of the reversed list
-        int index = 0;
-        while (index < count /2) {
-            int sum = head.val + prev.val;
-            if (sum > max) {
-                max = sum;
-            }
-            index++;
+        ListNode prev = null;
+        ListNode curr = slow;
+
+        while (curr != null) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        ListNode second = prev;
+        curr = head;
+        while (second != null) {
+            max = Math.max(max, second.val + curr.val);
+            second = second.next;
+            curr = curr.next;
         }
         return max;
     }
