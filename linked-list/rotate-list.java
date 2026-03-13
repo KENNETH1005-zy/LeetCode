@@ -16,7 +16,7 @@ class Solution {
         //every time find the node's next is null, make it as the dummy next
         ListNode dummy = new ListNode();
         dummy.next = head;
-        ListNode prev = dummy;
+        ListNode prev = head;
         ListNode curr = head;
 
         while (k>0) {
