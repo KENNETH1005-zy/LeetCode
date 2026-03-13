@@ -20,30 +20,27 @@ class Node {
 class Solution {
     public Node insert(Node head, int insertVal) {
         //if head is null
-        //set a boolean to check if this is the correct position to add the insertVal
         //while true
-        //case 1 : bigger than prev and smaller than curr
-        //case 2 : at the joint, bigger than prev, or smaller than the curr
-        //if boolean is true, add the inserVal in between and the next node is curr
-        //move to the next
-        //break if prev is head, means already iterate all the nodes in the circle and no valid result was found
-         // Case 3: No valid spot found, insert at any position
+        //if inserVal is bigger than prev, or smaller than curr, make the flag true
+        //if prev is bigger than curr, insert here
+        //if flag insert
+        //if not, move to next
+        //if not found, add in any where
         if (head == null) {
-            Node node = new Node(insertVal);
-            node.next = node;
-            return node;
+            Node newNode = new Node(insertVal);
+            newNode.next = newNode;
+            return newNode;
         }
-        boolean flag = false;
-        Node prev = head;
-        Node curr = prev.next;
 
+        Node prev = head;
+        Node curr = head.next;
+        boolean flag = false;
         while (true) {
-            
             if (prev.val <= insertVal && insertVal <= curr.val) {
                 flag = true;
-            }
-            else if (prev.val > curr.val){
-                if (prev.val <= insertVal || insertVal <= curr.val) {
+            }else if (prev.val > curr.val) {
+                // InsertVal is either greater than max or smaller than min
+                if (insertVal >= prev.val || insertVal <= curr.val) {
                     flag = true;
                 }
             }
@@ -54,9 +51,10 @@ class Solution {
             }
             prev = curr;
             curr = curr.next;
+
+            //if reach the head, break
             if (prev == head) break;
         }
-        // Case 3: No valid spot found, insert at any position
         prev.next = new Node(insertVal, curr);
         return head;
     }
