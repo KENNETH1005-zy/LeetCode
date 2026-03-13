@@ -15,6 +15,7 @@ class Solution {
         //using a even head, which is the first even node
         //link the odd pointer next to even head
         //return head
+        if (head == null) return null;
         ListNode odd = head;
         ListNode even = odd.next;
         ListNode evenHead = even;
