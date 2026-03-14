@@ -11,7 +11,7 @@ class Solution {
             }
 
             int evenLength = expand(i, i+1, s);
-            if (evenLength > result[1] - result[0]) {
+            if (evenLength > result[1] - result[0] + 1) {
                 int dist = evenLength / 2 - 1;
                 result[0] = i - dist;
                 result[1] = i + 1 + dist;
