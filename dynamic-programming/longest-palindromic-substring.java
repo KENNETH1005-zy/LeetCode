@@ -4,7 +4,7 @@ class Solution {
         int[] result = new int[]{0, 0};
         for (int i = 0; i < s.length(); i++) {
             int oddLength = expand(i, i, s);
-            if (oddLength > result[1] - result[1] + 1) {
+            if (oddLength > result[1] - result[0] + 1) {
                 int dist = oddLength / 2;
                 result[0] = i - dist;
                 result[1] = i + dist;
