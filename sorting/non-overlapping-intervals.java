@@ -1,26 +1,24 @@
 class Solution {
     public int eraseOverlapIntervals(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        // Sort by end time — critical for greedy correctness
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1]));
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>(); // min-heap of end times
+        int count = 0;           // number of intervals to remove
+        int prevEnd = intervals[0][1]; // end time of last accepted interval
 
-        for (int[] interval : intervals) {
-            int start = interval[0];
-            int end = interval[1];
+        for (int i = 1; i < intervals.length; i++) {
+            int start = intervals[i][0];
+            int end = intervals[i][1];
 
-            // If there's an overlap with the earliest-ending interval we've kept
-            if (!pq.isEmpty() && start < pq.peek()) {
-                // Replace the one with the largest end time if current ends earlier
-                if (end < pq.peek()) {
-                    pq.poll();
-                    pq.add(end);
-                }
-                // Otherwise, skip current
+            if (start < prevEnd) {
+                // Overlap: must remove current interval
+                count++;
             } else {
-                pq.add(end);
+                // No overlap: accept this interval
+                prevEnd = end;
             }
         }
 
-        return intervals.length - pq.size();
+        return count;
     }
 }
