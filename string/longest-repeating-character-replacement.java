@@ -13,8 +13,9 @@ class Solution {
         for (int r = 0; r < s.length(); r++) {
             int index = s.charAt(r) - 'A';
             freq[index] += 1;
-            boolean valid = (r + 1 - l - max <= k);
+            
             max = Math.max(max, freq[index]);
+            boolean valid = (r + 1 - l - max <= k);
             if (!valid) {
                 int out = s.charAt(l) - 'A';
                 freq[out] -= 1;
