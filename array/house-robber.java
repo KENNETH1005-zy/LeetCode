@@ -3,6 +3,7 @@ class Solution {
         //bottum up
         //create a dp array
         //store the max along the way
+        if (nums.length == 1) return nums[0];
         int[] dp = new int[nums.length];
         dp[0] = nums[0];
         dp[1] = nums[1];
