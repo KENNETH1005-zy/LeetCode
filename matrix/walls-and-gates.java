@@ -28,7 +28,7 @@ class Solution {
                 int newC = c + dir[1];
 
                 //out of bound
-                if (newR < 0 || newR >= rooms.length || newC < 0 || newC >= rooms[1].length || 
+                if (newR < 0 || newR >= rooms.length || newC < 0 || newC >= rooms[0].length || 
                     rooms[newR][newC] != empty) {
                     continue;
                 }
