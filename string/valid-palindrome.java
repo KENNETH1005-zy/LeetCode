@@ -5,6 +5,8 @@ class Solution {
         for (char c: s.toCharArray()) {
             if (Character.isLetter(c)) {
                 t += Character.toLowerCase(c);
+            }else if (Character.isDigit(c)) {
+                t += c;
             }
         }
         int i = 0;
