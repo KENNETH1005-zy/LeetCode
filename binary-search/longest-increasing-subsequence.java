@@ -1,36 +1,25 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        //list to store the valid subsequence
-        //add the first num
-        //iterate from 1th num, if valid add to the list
-        //if not valid, find the first index that is smaller or equal to current num
-        //replace it in the list result
-        //return list size
-        List<Integer> result = new ArrayList<>();
-        result.add(nums[0]);
-        for (int i = 1; i<nums.length; i++) {
-            int num = nums[i];
-            if (num > result.get(result.size() - 1)) {
-                result.add(num);
-            }else {
-                int j = find(result, num);
-                result.set(j, num);
+        //int[]dp to define the length of longest subsequence before this i
+        //starting with all 1, because the num it self can be a subsequence
+        //for i = 1 , impelement the dp array
+        //for j = 0 j < i, to iterate the nums before current i
+        //update dp[i] with dp[j] + 1(add itself), and dp[i]
+        //iterate the dp array to update the longest
+        //return longest
+
+        int[] dp = new int[nums.length];
+        Arrays.fill(dp, 1);
+        for (int i = 1; i< nums.length; i++) {
+            for (int j = 0; j<i; j++) {
+
+                if (nums[i] > nums[j]) dp[i] = Math.max(dp[i], dp[j] + 1);
             }
         }
-        return result.size();
-    }
-    public int find(List<Integer> result, int num) {
-        int l = 0;
-        int r = result.size() - 1;
-        while (l < r) {
-            int mid = l + (r - l) / 2;
-            if (result.get(mid) == num) return mid;
-            if (num > result.get(mid)) {
-                l = mid + 1;
-            }else {
-                r = mid;
-            }
+        int result = 0;
+        for (int num: dp) {
+            result = Math.max(result, num);
         }
-        return l;
+        return result;
     }
 }
