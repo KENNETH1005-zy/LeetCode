@@ -8,14 +8,13 @@ class Solution {
         for (int i = 0; i<k; i++) {
             sum += nums[i];
         }
-
+        double result = sum;
         for (int i = k; i<nums.length; i++) {
-            double oldsum = sum;
             sum -= nums[i - k];
             sum += nums[i];
             
-            sum = Math.max(oldsum, sum);
+            result = Math.max(result, sum);
         }
-        return sum / k;
+        return result / k;
     }
 }
