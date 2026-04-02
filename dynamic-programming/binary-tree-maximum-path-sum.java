@@ -32,7 +32,8 @@ class Solution {
 
         int left = dfs(node.left);
         int right = dfs(node.right);
-
+        left = Math.max(0, left);
+        right = Math.max(0, right);
         //include the current node
         result[0] = Math.max(result[0], node.val + left + right);
         //or exclude chose the bigger path between left and right
