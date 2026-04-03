@@ -35,17 +35,17 @@ class Solution {
         return head;
     }
     public ListNode reverse(ListNode head, int k) {
-        ListNode newHead = null;
+        ListNode prev = null;
         ListNode ptr = head;
-
         while (k > 0) {
-            ListNode nextNode = ptr.next;
-            ptr.next = newHead;
+            ListNode next = ptr.next;
+            ptr.next = prev;
 
-            newHead = ptr;
-            ptr = nextNode;
-            k--; 
+            //jump
+            prev = ptr;
+            ptr = next;
+            k--;
         }
-        return newHead;
+        return prev;
     }
 }
