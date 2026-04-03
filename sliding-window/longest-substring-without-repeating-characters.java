@@ -1,18 +1,28 @@
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        //map to store the index after the current index
-        //for starting from the next index
-        //if current char is found in map, update the left pointer
-        //return the longest
+        //longest
+        //create a sliding window
+        //map to store the char and the index 
+        //iterate throught the s, if a new char, continue to make it longer
+        //if contains in the map, get the index of it
+        //and make the l boudary is that duplicate index + 1
+        //update the longest length along the way
+        //retur the longest
+
+        int longest = 0;
+        int l = 0;
         Map<Character, Integer> map = new HashMap<>();
-        int result = 0;
-        for (int i = 0, j = 0; j < s.length(); j++) {
-            if (map.containsKey(s.charAt(j))) {
-                i = Math.max(map.get(s.charAt(j)), i);
+        for (int r = 0; r < s.length(); r++) {
+            char c = s.charAt(r);
+            //map is null and new char
+            if (map.isEmpty() || !map.containsKey(c)) {
+                map.put(c, r);
+            }else {
+                l = Math.min(r, map.get(c) + 1);
+                map.put(c, r);
             }
-            map.put(s.charAt(j), j+1);
-            result = Math.max(result, j - i + 1);
+            longest = Math.max(longest, r - l + 1);
         }
-        return result;
+        return longest;
     }
 }
