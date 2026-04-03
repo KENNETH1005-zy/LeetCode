@@ -18,7 +18,7 @@ class Solution {
             if (map.isEmpty() || !map.containsKey(c)) {
                 map.put(c, r);
             }else {
-                l = Math.min(r, map.get(c) + 1);
+                l = Math.max(l, map.get(c) + 1);
                 map.put(c, r);
             }
             longest = Math.max(longest, r - l + 1);
