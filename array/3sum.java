@@ -1,26 +1,24 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        //Intialize an empty set<List<Integer>> to avoid duplicate
-        Set<List<Integer>> resultSet = new HashSet<>();
-
-        if (nums == null || nums.length < 3) {
-            return new ArrayList<> (resultSet);
-        }
         Arrays.sort(nums);
-        
-        for (int i = 0 ;i < nums.length - 2; i++) {
-            //find opposite of nums[i]
-            int c = -nums[i];
-            Set <Integer> seen = new HashSet<>();
-            for (int j = i + 1 ; j < nums.length; j ++) {
-                int d = c - nums[j];
-                if (seen.contains(d)) {
-                    List<Integer> single = Arrays.asList(nums[i], nums[j], d);
-                    resultSet.add(single);
-                }
-                seen.add(nums[j]);
-            }
+        List<List<Integer>> res = new ArrayList<>();
+        for (int i = 0; i < nums.length && nums[i] <= 0; ++i) if (
+            i == 0 || nums[i - 1] != nums[i]
+        ) {
+            twoSum(nums, i, res);
         }
-        return new ArrayList<>(resultSet);
+        return res;
+    }
+
+    void twoSum(int[] nums, int i, List<List<Integer>> res) {
+        Set<Integer> seen = new HashSet<Integer>();
+        for (int j = i + 1; j < nums.length; ++j) {
+            int complement = -nums[i] - nums[j];
+            if (seen.contains(complement)) {
+                res.add(Arrays.asList(nums[i], nums[j], complement));
+                while (j + 1 < nums.length && nums[j] == nums[j + 1]) ++j;
+            }
+            seen.add(nums[j]);
+        }
     }
 }
