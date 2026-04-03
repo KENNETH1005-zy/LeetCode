@@ -10,20 +10,27 @@
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        //base case when current head is null, or next
-        //node is null return the head
-        //get the first node and the second node
-        //make the first's next to the next head(recursion)
-        //make the second's next to the first node
-        //return the second node (recursion)
-        if (head == null || head.next == null) {
-            return head;
-        }
-        ListNode first = head;
-        ListNode second = head.next;
+        //iteration
+        //dummy head to represent a node before the head
+        //use it as the prev node
+        //while head and head.next are both not null
+        //return dummy.next
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode prev = dummy;
 
-        first.next = swapPairs(second.next);
-        second.next = first;
-        return second;
+        while (head != null && head.next != null) {
+            ListNode first = head;
+            ListNode second = head.next;
+            
+            prev.next = second;
+            first.next = second.next;
+            second.next = first;
+
+            //jump
+            prev = first;
+            head = first.next;
+        }
+        return dummy.next;
     }
 }
