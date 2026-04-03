@@ -10,41 +10,42 @@
  */
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        //every k node reverse once
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
+        //count to record the index of the node
+        //ptr listnode to determine the node after the kth node
+        //which is next group's head
+        //while count < k move the pointer
+        //once find count == k
+        //do the the reverse function
+        //make head.next to the new reverseKgroup head
+        //return the reversed head
+        //else return the head, means, there is not enough k nodes
+        int count = 0;
+        ListNode ptr = head;
 
-        ListNode pivot = dummy;
-        while (pivot != null) {
-            ListNode tracker = pivot;
-
-            for (int i = 0; i<k; i++) {
-                if (tracker == null) break;
-                tracker = tracker.next;
-            }
-            if (tracker == null) break;
-            ListNode[] pair = reverse(pivot.next, k);
-            ListNode first = pair[0];
-            ListNode firstNext = pair[1];
-
-            ListNode lastOne = pivot.next;
-            lastOne.next = firstNext;
-            pivot.next = first;
-            pivot = lastOne;
+        while (count < k && ptr != null) {
+            ptr = ptr.next;
+            count++;
         }
-        return dummy.next;
+
+        if (count == k) {
+            ListNode reversedHead = reverse(head, k);
+            head.next = reverseKGroup(ptr, k);
+            return reversedHead;
+        }
+        return head;
     }
-    //helper function to reverse the nodes
-    public ListNode[] reverse(ListNode node, int k) {
-        ListNode prev = null;
-        ListNode curr = node;
-        
-        for (int i = 0; i<k; i++) {
-            ListNode next = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = next;
+    public ListNode reverse(ListNode head, int k) {
+        ListNode newHead = null;
+        ListNode ptr = head;
+
+        while (k > 0) {
+            ListNode nextNode = ptr.next;
+            ptr.next = newHead;
+
+            newHead = ptr;
+            ptr = nextNode;
+            k--; 
         }
-        return new ListNode[]{prev, curr};
+        return newHead;
     }
 }
