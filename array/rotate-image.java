@@ -4,8 +4,8 @@ class Solution {
         //starting from the first 0th row
         //keep the first num, make the last in the row to the first num
         //rotate it in clockwise
-        for (int i = 0; i <(n+1) / 2; i++) {
-            for (int j = 0; j < n / 2; j++) {
+        for (int i = 0; i <n / 2; i++) {
+            for (int j = 0; j <(n+1) / 2; j++) {
                //set as left top as[i][j]
                //right top [j][n - i - 1]
                //right buttom [n - i - 1][n - 1 - j];
