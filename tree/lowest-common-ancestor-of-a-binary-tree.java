@@ -8,27 +8,28 @@
  * }
  */
 class Solution {
-    //global result
+    //global result node
     TreeNode result;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        //to find the common descendant
+        if (root == null) return null;
         dfs(root, p, q);
         return result;
     }
-    //a fuction that can determin whether the left or the right or the current node is a valid result
-    public boolean dfs(TreeNode node, TreeNode p, TreeNode q) {
-        //base case, if not find the result, traverse to null return false
-        if (node == null) return false;
-        
-        int left = dfs(node.left, p, q) ? 1 : 0;
-        int right = dfs(node.right, p, q) ? 1 : 0;
-
-        int mid = (node.val == p.val || node.val == q.val) ? 1:0;
-
-        if (left + right + mid >= 2) {
-            result = node;
+    //helper function to dectect if hit p or q, 
+    //in left and right and mid node, only contains one, return true, means find it
+    public boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
+        //base case
+        if (root == null) {
+            return false;
         }
-        //return true if any of it has valid node
+        int left = dfs(root.left, p, q) ? 1 : 0;
+        int right = dfs(root.right, p, q) ? 1 : 0;
+        int mid = (root == p || root == q) ? 1 : 0;
+
+        if ((left + right + mid) >= 2) {
+            result = root;
+        }
         return left + right + mid > 0;
     }
+
 }
