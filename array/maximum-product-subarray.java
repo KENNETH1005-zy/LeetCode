@@ -1,20 +1,21 @@
 class Solution {
     public int maxProduct(int[] nums) {
-        //becase the min and max so far can both be max result 
-        //so need to record them along the way
-
-        int max_sofar = nums[0];
-        int min_sofar = nums[0];
-        int result = max_sofar;
-
+        //an int to update min
+        //and the maxmum
+        int min = nums[0];
+        int max = nums[0];
+        int result = max;
+        //iterate through the nums
+        //for each nums[i], update the max with nums[i], and max * nums[i]
+        //update the min num
+        //return max
         for (int i = 1; i<nums.length; i++) {
             int curr = nums[i];
-            int temp_max = Math.max(curr, Math.max(max_sofar * curr, min_sofar * curr));
-
-            min_sofar = Math.min(curr, Math.min(max_sofar * curr, min_sofar * curr));
-            //update max
-            max_sofar = temp_max;
-            result = Math.max(result, max_sofar);
+            //if the current is bigger than prev max, just move to the curr num
+            int temp_max = Math.max(curr, Math.max(curr * max, curr * min));
+            min = Math.min(curr, Math.min(curr * max, curr * min));
+            max = temp_max;
+            result = Math.max(max, result);
         }
         return result;
     }
