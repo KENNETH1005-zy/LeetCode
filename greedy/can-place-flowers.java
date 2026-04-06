@@ -3,6 +3,9 @@ class Solution {
         //if both front and end space is 0
         //can be planted
         //if not return true
+        if (flowerbed.length == 1 && flowerbed[0] == 0) {
+            return true;
+        }
         for (int i = 0; i<flowerbed.length; i++) {
             if (flowerbed[i] == 1) {
                 continue;
