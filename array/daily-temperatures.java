@@ -1,26 +1,31 @@
 class Solution {
     public int[] dailyTemperatures(int[] temperatures) {
-        //a stack to store temp that has not find warmer temp yet
-        //if find the warmer temp, pop from the stack
-        //record the day - day (in stack)
-        int n = temperatures.length;
-        int[] result = new int[n];
-        //stack<int[]> {temp, day}
+        //use stack to store the temp and the day
+        //iterate through the temp array
+        //if new warmer days is found, pop out from the stack, until empty
+        //update the result array
+        //and push the new one
+        int[] result = new int[temperatures.length];
         Stack<int[]> stack = new Stack<>();
-        Arrays.fill(result, 0);
 
-        for (int i = 0; i<n; i++) {
-            if (i == 0 || stack.isEmpty()) {
+        for (int i = 0; i< temperatures.length; i++) {
+            //if empty
+            if (stack.isEmpty()) {
                 stack.push(new int[]{temperatures[i], i});
                 continue;
             }
-            while (!stack.isEmpty() && temperatures[i] > stack.peek()[0] ) {
+            while (!stack.isEmpty() && stack.peek()[0] < temperatures[i]) {
                 int[] temp = stack.pop();
                 int oldDay = temp[1];
                 result[oldDay] = i - oldDay;
-                
             }
             stack.push(new int[]{temperatures[i], i});
+        }
+        //if there are left in stack
+        while (!stack.isEmpty()) {
+            int[] temp = stack.pop();
+            int day = temp[1];
+            result[day] = 0;
         }
         return result;
     }
