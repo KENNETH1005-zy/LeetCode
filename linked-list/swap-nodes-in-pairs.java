@@ -10,27 +10,13 @@
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        //iteration
-        //dummy head to represent a node before the head
-        //use it as the prev node
-        //while head and head.next are both not null
-        //return dummy.next
-        ListNode dummy = new ListNode();
-        dummy.next = head;
-        ListNode prev = dummy;
-
-        while (head != null && head.next != null) {
-            ListNode first = head;
-            ListNode second = head.next;
-            
-            prev.next = second;
-            first.next = second.next;
-            second.next = first;
-
-            //jump
-            prev = first;
-            head = first.next;
-        }
-        return dummy.next;
+        //change the current not with its next, if next is not null
+        if (head == null || head.next == null) return head;
+        ListNode first = head;
+        ListNode second = head.next;
+        //dfs to find the next head
+        first.next = swapPairs(second.next);
+        second.next = first;
+        return second;
     }
 }
