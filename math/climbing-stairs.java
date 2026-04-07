@@ -3,6 +3,7 @@ class Solution {
         //an array to store how many ways can reach that step
         //update the array
         //return [n]
+        if (n <= 1) return n;
         int[] dp = new int[n + 1];
         //dont have to take any stare to climb to 0 step
         dp[0] = 0;
