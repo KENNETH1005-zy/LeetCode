@@ -1,22 +1,19 @@
 class Solution {
     public int jump(int[] nums) {
-        //set a boundary end, each time, if reach the end, update the boundary
-        int currFar = 0;
-        int currEnd= 0;
-        int result = 0;
-        //move before the last num
+        //a var to store the maxEnd, which means the max index the prev num can jump
+        //a var to store the currEnd, which means the index, the current num can jump
+        int maxEnd = 0;
+        int currEnd = 0;
+        int steps = 0;
         for (int i = 0; i< nums.length - 1; i++) {
-            //update the current num's max reachable index
-            currFar = Math.max(currFar, nums[i] + i);
+            currEnd = Math.max(currEnd, i + nums[i]);
 
-            //if reach the boundary
-            if (i == currEnd) {
-                result++;
-                //find new boundary
-                currEnd = currFar;
+            //only if the current index is reach the prev max end
+            if (i == maxEnd) {
+                steps++;
+                maxEnd = currEnd;
             }
         }
-        
-        return result;
+        return steps;
     }
 }
