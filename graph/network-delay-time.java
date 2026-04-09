@@ -1,73 +1,47 @@
 class Solution {
-    Map<Integer, List<Pair<Integer, Integer>>> map;
+    //{time, neighbor node}
+    Map<Integer, List<int[]>> map = new HashMap<>();
     public int networkDelayTime(int[][] times, int n, int k) {
-        //relation map to record the source to target
-        //map {sourse, {time, dest}}
-        //array to store the minmum to arrive at that node
-        //array[n + 1] 1 -> n
-        //current node time 0
-        //get max value in this array
-        //return max time
-
-        map = new HashMap<>();
+        //dp
+        //implement
+        //return max
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[k] = 0;
         for (int[] time: times) {
-            int s = time[0];
-            int d = time[1];
-            int t = time[2];
-
-            //if map contains the key add to the value
-            //else create a new 
-            if (map.containsKey(s)) {
-                map.get(s).add(new Pair<>(t, d));
-            }else {
-                map.put(s, new ArrayList<>());
-                map.get(s).add(new Pair<>(t, d));
-            }
+            map.putIfAbsent(time[0], new ArrayList<>());
+            //{time, neighbor node}
+            map.get(time[0]).add(new int[]{time[2], time[1]});
         }
-
-        int[] minTime = new int[n+1];
-        Arrays.fill(minTime, Integer.MAX_VALUE);
-        BFS(minTime, k);
-        int answer = Integer.MIN_VALUE;
-        for (int i = 1; i <= n; i++) {
-            answer = Math.max(answer, minTime[i]);
+        helper(dp, 0, k);
+        int result = Integer.MIN_VALUE;
+        for (int i = 1; i<= n; i++) {
+            result = Math.max(result, dp[i]);
         }
-        
-        // INT_MAX signifies atleat one node is unreachable
-        return answer == Integer.MAX_VALUE ? -1 : answer;
+        return result == Integer.MAX_VALUE  ? -1 : result;
     }
-    //helper function to record and implement the minTime array
-    public void BFS(int[] minTime, int source) {
-        //q to store the neighbors that appears in relationship map
-        Queue<Integer> q = new LinkedList<>();
+    //helper function
+    //add initial
+    //while pq not null
+    //if new time is shorter, update
+    public void helper(int[] dp, int time, int source) {
+        //pq to store the earliest arrived node
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+        pq.offer(new int[]{time, source});
+        while (!pq.isEmpty()) {
+            int[] temp = pq.poll();
+            int currNode = temp[1];
+            int currTime = temp[0];
+            if (currTime > dp[currNode]) continue;
+            if (!map.containsKey(currNode)) continue;
 
-        //add the current node to the q
-        //while q is not empty
-        //poll the node out
-        //iterate over its neighbors
-        //update the minTime
-        //if the new time prev minTime is bigger than current time
-        //which is the time to current node + time to the neihgbor
-        //update the neighbor time
+            for (int[] neighbor: map.get(currNode)) {
+                int neighborNode = neighbor[1];
+                int nextTime = neighbor[0];
 
-        q.add(source);
-        minTime[source] = 0;
-
-        while (!q.isEmpty()) {
-            int curr = q.poll();
-
-            if (!map.containsKey(curr)) {
-                continue;
-            }
-
-            for (Pair<Integer,Integer> neighbor: map.get(curr)) {
-                int timeToNeighbor = neighbor.getKey();
-                int neighborNode = neighbor.getValue();
-
-                int arrival = minTime[curr] + timeToNeighbor;
-                if (minTime[neighborNode] > arrival) {
-                    minTime[neighborNode] = arrival;
-                    q.add(neighborNode);
+                if (dp[neighborNode] > currTime + nextTime) {
+                    dp[neighborNode] = currTime + nextTime;
+                    pq.offer(new int[]{dp[neighborNode], neighborNode});
                 }
             }
         }
