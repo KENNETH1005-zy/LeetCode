@@ -1,54 +1,54 @@
 class Solution {
+    int[][] dirs = new int[][]{{0,1}, {1,0}, {0,-1}, {-1, 0}};
+    int m;
+    int n;
     public int minimumEffortPath(int[][] heights) {
-        //use binary search to find if we can find a abs diff under K
-        int left = 0;
-        int right = 1000000;
-        int result = right;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            //if can reach the end, find a smaller one
-            if (canUnder(mid, heights)) {
-                result = Math.min(result, mid);
-                right = mid - 1;
-            }else {
-                left = mid + 1;
+        //priorityqueue can make the smaller diff polled first
+        //once reach the destination, return the curr.diff
+        //graph to store each min diff from prev node
+        //pq to store the smallest poll
+        //if meet des, return earlier
+        //return [][]des at last
+        m = heights.length;
+        n = heights[0].length;
+        int[][] graph = new int[m][n];
+        for (int[] each: graph)
+            Arrays.fill(each, Integer.MAX_VALUE);
+        graph[0][0] = 0;
+        //{row, col, diff with prev node}
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        pq.offer(new int[]{0, 0, 0});
+        boolean[][] visited = new boolean[m][n];
+        
+        while (!pq.isEmpty()) {
+            int[] temp = pq.poll();
+            int currR = temp[0];
+            int currC = temp[1];
+            int diff = temp[2];
+            visited[currR][currC] = true;
+            if (currR == m - 1 && currC == n - 1) {
+                return diff;
             }
-        }
-        return result;
-    }
-    //helepr function to detect if can reach the end
-    int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    public boolean canUnder(int mid, int[][] heights) {
-        int rows = heights.length;
-        int cols = heights[0].length;
-        boolean[][] visited = new boolean[rows][cols];
-        return canReach(0, 0, heights, visited, rows, cols, mid);
-    }
-    public boolean canReach(int x, int y, int[][] heights,
-                               boolean[][] visited, int rows, int cols, int mid) {
-        //if reach end
-        if (x == rows - 1 && y == cols - 1) {
-            return true;
-        }
-        visited[x][y] = true;
-        for (int[] dir: directions) {
-            int newX = x + dir[0];
-            int newY = y + dir[1];
 
-            if (isValidCell(newX, newY, rows, cols) && !visited[newX][newY]) {
-                int currentDiff = Math.abs(heights[newX][newY] - heights[x][y]);
-                if (currentDiff <= mid) {
-                    if (canReach(newX, newY, heights, visited, rows, cols, mid)) {
-                        return true;
-                    }
+            for (int[] dir: dirs) {
+                int neighborR = currR + dir[0];
+                int neighborC = currC + dir[1];
+
+                if (!valid(neighborR, neighborC) || visited[neighborR][neighborC]) {
+                    continue;
+                }
+                int currDiff = Math.abs(heights[currR][currC] - heights[neighborR][neighborC]);
+                int maxDiff = Math.max(currDiff, graph[currR][currC]);
+
+                if (graph[neighborR][neighborC] > maxDiff) {
+                    graph[neighborR][neighborC] = maxDiff;
+                    pq.add(new int[]{neighborR, neighborC, maxDiff});
                 }
             }
         }
-        return false;
+        return graph[m - 1][n - 1];
     }
-    //helper function can reach the end
-    //helper function to detect if current cell is in bound
-    public boolean isValidCell(int x, int y, int row, int col) {
-        return x >= 0 && x <= row - 1 && y >= 0 && y <= col - 1;
+    public boolean valid(int r, int c) {
+        return r >= 0 && r < m && c >=0 && c < n;
     }
 }
