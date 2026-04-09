@@ -22,6 +22,6 @@ class Solution {
             }
             dests = temp;
         }
-        return dests[dst];
+        return dests[dst] == Integer.MAX_VALUE ? -1 : dests[dst];
     }
 }
