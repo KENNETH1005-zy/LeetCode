@@ -8,6 +8,12 @@ class Solution {
         //if find L in result, and same index in start is X, if right in start is L, continue
         //if not return false
         if (start.length() <= 1 || result.length() <= 1) return false;
+        int count = 0;
+        for (int i = 0; i < start.length(); ++i) {
+            if (start.charAt(i) == 'X') count++;
+            if (result.charAt(i) == 'X') count--;
+        }
+        if (count != 0) return false;
         int sP = 0;
         int rP = 0;
 
