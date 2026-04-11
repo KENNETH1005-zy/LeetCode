@@ -4,6 +4,7 @@ class Solution {
         //if currJump max is more or equal to last one
         //return true, immediately
         //else just update the maxJump
+        if (nums.length == 1) return true;
         int currMax = nums[0];
         int maxJump = nums[0];
 
