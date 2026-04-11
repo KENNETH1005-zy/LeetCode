@@ -1,22 +1,14 @@
 class Solution {
     public boolean canJump(int[] nums) {
-        //record the currJump max and overall max
-        //if currJump max is more or equal to last one
-        //return true, immediately
-        //else just update the maxJump
-        if (nums.length == 1) return true;
-        if (nums[0] == 0) return false;
-        int currMax = nums[0];
-        int maxJump = nums[0];
-
-        for (int i = 0; i<nums.length - 1; i++) {
-            
-            currMax = Math.max(nums[i] + i, currMax);
-            maxJump = Math.max(currMax, maxJump);
-            if (currMax >= nums.length - 1) {
-                return true;
+        //from the back to the front
+        //update the last index to reach on time
+        //if reach the 0th in the num, means it can reach the last one in nums
+        int last = nums.length - 1;
+        for (int i = nums.length - 1; i>= 0; i--) {
+            if (i + nums[i] >= last) {
+                last = i;
             }
         }
-        return false;
+        return last == 0;
     }
 }
