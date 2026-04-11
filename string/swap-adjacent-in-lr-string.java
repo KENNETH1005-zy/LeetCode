@@ -1,50 +1,52 @@
 class Solution {
     public boolean canTransform(String start, String result) {
-        //tow pointers
-        //once meet R or L
-        //if both R or L continue
-        //if find R in result, and same index in start is X, if left in start is R, continue
-        //if not return false
-        //if find L in result, and same index in start is X, if right in start is L, continue
-        //if not return false
-        if (start.length() <= 1 || result.length() <= 1) return false;
+        //if the numbers of X are not the same, return false
+        //two pointer
+        //skip all the x
+        //if reach x at the same time return true
+        //if the char are not the same return false
+        //if char is r and the i > j, means cannot go right return false
+        //if char is l and i < j, return false
+        //return true at last
+        int n = start.length();
+        int i = 0;
+        int j = 0;
         int count = 0;
-        for (int i = 0; i < start.length(); ++i) {
-            if (start.charAt(i) == 'X') count++;
-            if (result.charAt(i) == 'X') count--;
+        while (i < n || j < n) {
+            if (i < n && start.charAt(i) == 'X') {
+                count++;
+            }
+            if (j <n && result.charAt(j) == 'X') {
+                count--;
+            }
+            i++;
+            j++;
         }
         if (count != 0) return false;
-        int sP = 0;
-        int rP = 0;
-
-        while (sP <start.length() && rP <result.length()) {
-
-            if (result.charAt(rP) == 'X' || result.charAt(rP) == start.charAt(sP)) {
-                sP++;
-                rP++;
-                continue;
-            }
-          
-            if (result.charAt(rP) == 'R') {
-                if (sP <= 0) return false;
-                if (start.charAt(sP - 1) == 'R') {
-                    sP++;
-                    rP++;
-                    continue;
-                }else {
-                    return false;
-                }
-            }else if (result.charAt(rP) == 'L'){
-                if (sP >= start.length() - 1) return false;
-                if (start.charAt(sP + 1) == 'L') {
-                    sP++;
-                    rP++;
-                    continue;
-                }else {
-                    return false;
-                }
+        
+        i = 0;
+        j = 0;
+        while (i < n || j < n) {
+            while (i <n && start.charAt(i) == 'X') {
+                i++;
             }
 
+            while (j <n && result.charAt(j) == 'X') {
+                j++;
+            }
+            if (i == n && j == n) return true;
+
+            if (start.charAt(i) != result.charAt(j)) {
+                return false;
+            }
+            if (start.charAt(i) == 'R' && i > j) {
+                return false;
+            }
+            if (start.charAt(i) == 'L' && i < j) {
+                return false;
+            }
+            i++;
+            j++;
         }
         return true;
     }
