@@ -5,6 +5,7 @@ class Solution {
         //return true, immediately
         //else just update the maxJump
         if (nums.length == 1) return true;
+        if (nums[0] == 0) return false;
         int currMax = nums[0];
         int maxJump = nums[0];
 
