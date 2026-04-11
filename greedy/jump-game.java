@@ -1,16 +1,19 @@
 class Solution {
     public boolean canJump(int[] nums) {
-        //it determines, every index we can jump to
-        boolean[] jump = new boolean[nums.length];
-        jump[0] = true;
+        //record the currJump max and overall max
+        //if currJump max is more or equal to last one
+        //return true, immediately
+        //else just update the maxJump
+        int currMax = nums[0];
+        int maxJump = nums[0];
 
-        for (int i = 0; i< nums.length; i++) {
-            if (!jump[i]) return false;
-            int max = nums[i];
-            for (int j = i + 1; j<=max + i && j < nums.length; j++) {
-                jump[j] = true;
+        for (int i = 0; i<nums.length - 1; i++) {
+            if (currMax >= nums.length - 1) {
+                return true;
             }
+            currMax = Math.max(nums[i] + i, currMax);
+            maxJump = Math.max(currMax, maxJump);
         }
-        return jump[nums.length - 1];
+        return false;
     }
 }
