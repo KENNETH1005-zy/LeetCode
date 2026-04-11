@@ -9,11 +9,12 @@ class Solution {
         int maxJump = nums[0];
 
         for (int i = 0; i<nums.length - 1; i++) {
+            
+            currMax = Math.max(nums[i] + i, currMax);
+            maxJump = Math.max(currMax, maxJump);
             if (currMax >= nums.length - 1) {
                 return true;
             }
-            currMax = Math.max(nums[i] + i, currMax);
-            maxJump = Math.max(currMax, maxJump);
         }
         return false;
     }
