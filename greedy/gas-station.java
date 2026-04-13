@@ -11,11 +11,11 @@ class Solution {
             total += gas[i] - cost[i];
             //if total is samller than 0, mean every A to B
             //cannot reach the end
-            if (total < 0) {
+            if (curr < 0) {
                 result = i + 1;//search for the next station, out of the curr bound
                 curr = 0;
             }
         }
-        return result;
+        return total >= 0? result : -1;
     }
 }
