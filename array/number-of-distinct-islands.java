@@ -1,41 +1,40 @@
 class Solution {
+    boolean[][] visited;
     int[][] grid;
-    Set<Pair<Integer, Integer>> current;
-    int currentRow;
-    int currentCol;
-    boolean[][] seen;
+    StringBuilder current;
     public int numDistinctIslands(int[][] grid) {
-        //if the shapes are exactly the same, the two islands are considered to be the same
-        //using pair to compare with other index, in the set
+        //store the path as chars to the set
+        //return the set length
+        //dfs to find the path
         this.grid = grid;
-        this.seen = new boolean[grid.length][grid[0].length];
-
-        Set<Set<Pair<Integer, Integer>>> result = new HashSet<>();
-        for (int row = 0; row <grid.length; row++) {
-            for (int col = 0; col < grid[0].length; col++) {
-                current = new HashSet<>();
-                currentRow = row;
-                currentCol = col;
-                dfs(row, col);
-
-                if (!current.isEmpty()) {
-                    result.add(current);
+        visited = new boolean[grid.length][grid[0].length];
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i<grid.length; i++) {
+            for(int j = 0; j<grid[0].length; j++) {
+                //initialize in every iteration
+                current = new StringBuilder();
+                dfs(i, j, '0');
+                if (current.length() == 0) {
+                    continue;
                 }
+                set.add(current.toString());
             }
         }
-        return result.size();
+        return set.size();
     }
-    public void dfs(int row, int col) {
-        //base case, out of bound
-        if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] != 1 || seen[row][col]) {
+    //helper function
+    public void dfs(int i, int j, char dir){
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length){
             return;
         }
-        seen[row][col] = true;
-        current.add(new Pair<>(row - currentRow, col - currentCol));
-        //find the next valid place
-        dfs(row + 1, col);
-        dfs(row - 1, col);
-        dfs(row, col + 1);
-        dfs(row, col - 1);
+        if (visited[i][j] || grid[i][j] == 0) {
+            return;
+        }
+        visited[i][j] = true;
+        current.append(dir);
+        dfs(i + 1, j, 'D');
+        dfs(i, j + 1, 'R');
+        dfs(i - 1, j, 'U');
+        dfs(i, j - 1, 'L');
     }
 }
