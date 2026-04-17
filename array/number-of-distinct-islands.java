@@ -36,5 +36,6 @@ class Solution {
         dfs(i, j + 1, 'R');
         dfs(i - 1, j, 'U');
         dfs(i, j - 1, 'L');
+        current.append('0');
     }
 }
