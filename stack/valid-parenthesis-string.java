@@ -23,9 +23,11 @@ class Solution {
             }
         }
         //if there is other ( still left, return false
-        if (!left.isEmpty()) {
-            return false;
+        //find if the wild cards match the left
+        while (!left.isEmpty() && !wild.isEmpty()) {
+            left.pop();
+            wild.pop();
         }
-        return true;
+        return left.isEmpty();
     }
 }
