@@ -4,14 +4,15 @@ class Solution {
         //every time find a ), pop a ( from the stack
         //* is a wild card, use a new stack to store the wild card
         //if current ) , and two stacks are both empty, return false
-        Stack <Character> left = new Stack<>();
-        Stack <Character> wild = new Stack<>();
+        Stack <Integer> left = new Stack<>();
+        Stack <Integer> wild = new Stack<>();
 
-        for (char c: s.toCharArray()) {
+        for (int i = 0; i<s.length(); i++) {
+            int c = s.charAt(i);
             if (c == '(') {
-                left.push('(');
+                left.push(i);
             }else if (c == '*') {
-                wild.push('*');
+                wild.push(i);
             }else {
                 if (!left.isEmpty()) {
                     left.pop();
@@ -24,9 +25,11 @@ class Solution {
         }
         //if there is other ( still left, return false
         //find if the wild cards match the left
+        //and ( cannot appears after *
         while (!left.isEmpty() && !wild.isEmpty()) {
-            left.pop();
-            wild.pop();
+            if (left.pop() > wild.pop()) {
+                return false;
+            }
         }
         return left.isEmpty();
     }
