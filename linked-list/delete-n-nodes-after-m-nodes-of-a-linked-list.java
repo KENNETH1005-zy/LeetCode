@@ -10,21 +10,23 @@
  */
 class Solution {
     public ListNode deleteNodes(ListNode head, int m, int n) {
-        ListNode prev = head;
-        ListNode curr = head;
+        //keep m, remove n nodes
         int count = 0;
+        ListNode curr = head;
+        ListNode prev = head;
 
         while (curr != null) {
-            prev = curr;
+            //jump to find the m + 1 node
             while (count < m && curr != null) {
                 prev = curr;
-                count += 1;
                 curr = curr.next;
+                count += 1;
             }
             count = 0;
             while (count < n && curr != null) {
-                count += 1;
+
                 curr = curr.next;
+                count += 1;
             }
             count = 0;
             prev.next = curr;
