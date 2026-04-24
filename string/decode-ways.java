@@ -8,6 +8,9 @@ class Solution {
     public int dfs(int index, String s) {
         //base case
         int result = 0;
+        if (map.containsKey(index)) {
+            return map.get(index);
+        }
         if (index == s.length()) {
             return 1;
         }
@@ -24,6 +27,7 @@ class Solution {
         if (Integer.parseInt(s.substring(index, index + 2)) <= 26) {
             result += dfs(index + 2, s);
         }
+        map.put(index, result);
         return result;
     }
 }
