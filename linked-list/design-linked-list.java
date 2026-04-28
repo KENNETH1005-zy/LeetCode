@@ -35,7 +35,7 @@ class MyLinkedList {
 
     public void addAtIndex(int index, int val) {
         if (index > size) return;
-        if (index < 0) index = 0;
+
         
         size++;
         Node pred = head;
