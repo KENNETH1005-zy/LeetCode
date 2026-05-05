@@ -1,41 +1,38 @@
 class Solution {
-    boolean[][] visited;
-    int[][] grid;
-    StringBuilder current;
+    int m;
+    int n;
     public int numDistinctIslands(int[][] grid) {
-        //store the path as chars to the set
-        //return the set length
-        //dfs to find the path
-        this.grid = grid;
-        visited = new boolean[grid.length][grid[0].length];
-        Set<String> set = new HashSet<>();
-        for (int i = 0; i<grid.length; i++) {
-            for(int j = 0; j<grid[0].length; j++) {
-                //initialize in every iteration
-                current = new StringBuilder();
-                dfs(i, j, '0');
-                if (current.length() == 0) {
-                    continue;
-                }
-                set.add(current.toString());
+        //the same shape islands are considered to be the same
+        //store the relative relationship of the parts
+        //use chars to store the islands
+        //same shape islands have the same string
+        m = grid.length;
+        n = grid[0].length;
+
+        Set<String> result = new HashSet<>();
+        boolean[][] seen = new boolean[m][n];
+
+        for (int i = 0; i<m; i++) {
+            for (int j = 0; j<n; j++) {
+                if (grid[i][j] == 0) continue;
+                StringBuilder current = new StringBuilder();
+                dfs(i, j, grid, seen, current);
+                if (current.length() == 0) continue;
+                result.add(current.toString());
             }
         }
-        return set.size();
+        return result.size();
     }
-    //helper function
-    public void dfs(int i, int j, char dir){
-        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length){
+
+    public void dfs(int i, int j, int[][] grid, boolean[][] seen, StringBuilder current) {
+        //base case
+        if (i <0 || i >= m || j <0 || j >= n || seen[i][j] || grid[i][j] != 1) {
             return;
         }
-        if (visited[i][j] || grid[i][j] == 0) {
-            return;
-        }
-        visited[i][j] = true;
-        current.append(dir);
-        dfs(i + 1, j, 'D');
-        dfs(i, j + 1, 'R');
-        dfs(i - 1, j, 'U');
-        dfs(i, j - 1, 'L');
-        current.append('0');
+        seen[i][j] = true;
+        dfs(i + 1, j, grid, seen, current.append('D'));
+        dfs(i, j + 1, grid, seen, current.append('R'));
+        dfs(i - 1, j, grid, seen, current.append('U'));
+        dfs(i, j - 1, grid, seen, current.append('L'));
     }
 }
