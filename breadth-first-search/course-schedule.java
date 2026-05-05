@@ -1,44 +1,49 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        //[0] means course need to take, [1] is precourse
-        //int[] indegree, means number of precoureses for each
-        //use list to store thepreque num for each
-        //use queue to add the available courses which is the courses with indegree is 0
-        int[] indegree = new int[numCourses];
-        List<List<Integer>> list = new ArrayList<>();
-        
-        //add new empty list for each course
-        for (int i = 0; i< numCourses; i++) {
-            list.add(new ArrayList<>());
+    public boolean canFinish(int numCourses, int[][] ps) {
+        //must take b first then the a
+        //create a list for storing b for an a
+        //return true if not circle detected
+        //boolean array for inStack and seen
+        //for each numCourse, dfs to find if circle
+        //backtracking
+        List<List<Integer>> pres = new ArrayList<>();
+        for (int i = 0; i<numCourses; i++) {
+            pres.add(new ArrayList<>());
         }
-        for (int[] pre: prerequisites) {
-            int take = pre[0];
-            int preclass = pre[1];
-            //finish b then a, so construct like this
-            list.get(preclass).add(take);
-            indegree[take]++;
-        }
-        Queue<Integer> q = new LinkedList<>();
-        //add courses that indegree is 0
-        for (int i = 0; i<indegree.length; i++) {
-            if (indegree[i]== 0) {
-                q.offer(i);
-            }
-        }
-        //use queue to add each pre
-        //use visited 
-        int visited = 0;
-        while (!q.isEmpty()) {
-            int course = q.poll();
-            visited++;
 
-            for (int neighbor: list.get(course)) {
-                indegree[neighbor]--;
-                if (indegree[neighbor] == 0) {
-                    q.offer(neighbor);
-                }
+        for (int[] p: ps) {
+            pres.get(p[0]).add(p[1]);
+        }
+        //in stack means there is a circle
+        boolean[] inStack = new boolean[numCourses];
+        boolean[] seen = new boolean[numCourses];
+        for (int i = 0; i<numCourses; i++) {
+            if (dfs(i, pres, inStack, seen)) {
+                return false;
             }
         }
-        return visited == numCourses;
+        return true;
+    }
+
+    public boolean dfs(int i, List<List<Integer>> pres, boolean[] inStack, boolean[] seen) {
+        //if in stack
+        if (inStack[i]) {
+            return true;
+        }
+        //seen it before, break the dfs to find others
+        if (seen[i]) {
+            return false;
+        }
+        inStack[i] = true;
+        seen[i] = true;
+        //for the adj
+        for (int neighbor: pres.get(i)) {
+            if (dfs(neighbor, pres, inStack, seen)) {
+                return true;
+            }
+        }
+        //backtracking remove from the stack
+        inStack[i] = false;
+        return false;
     }
 }
