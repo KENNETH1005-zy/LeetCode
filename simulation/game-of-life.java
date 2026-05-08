@@ -5,7 +5,7 @@ class Solution {
         //1, 2 <= neighbors 1 <= 3, still 1
         //1, neighbors more than 3, dies
         //0, with 3 neighbors, becomes 1
-        int[] dirs = new int[]{-1, 0, 1};
+        int[] dirs = {-1, 0, 1};
         for (int i = 0; i< board.length; i++) {
             for (int j = 0; j<board[0].length; j++) {
                 int lives = 0;
