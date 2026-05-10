@@ -15,30 +15,23 @@
  */
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
-        //record the level of the node
-        //if left tree has some thing that exceed tge right level, add it to the result
-        //only if the level is equal to the right view size, then add to the result
-        if (root == null) {
-            return new ArrayList<Integer>();
-        }
+        if (root == null) return new ArrayList<>();
         List<Integer> result = new ArrayList<>();
-
-        dfs(result, 0, root);
-        return result;
-    }
-    public void dfs(List<Integer> result, int level, TreeNode node) {
-
-        if (level == result.size()) {
-            result.add(node.val);
-        }
-        //a collection to collect the children
-        List<TreeNode> children = new ArrayList<>();
-        children.add(node.right);
-        children.add(node.left);
-        for (TreeNode current: children) {
-            if (current != null) {
-                dfs(result, level+1, current);
+        //store the level treenodes
+        //in a queue
+        //bfs
+        //each level, poll the last one
+        Deque<TreeNode> dq = new LinkedList<>();
+        dq.addLast(root);
+        while (!dq.isEmpty()) {
+            int size = dq.size();
+            for (int i = 0; i<size; i++) {
+                TreeNode node = dq.pollFirst();
+                if (node.left != null) dq.addLast(node.left);
+                if (node.right != null) dq.addLast(node.right);
+                if (i == size - 1) result.add(node.val);
             }
         }
+        return result;
     }
 }
