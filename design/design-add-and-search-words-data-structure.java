@@ -1,56 +1,62 @@
-class TrieNode{
+//use trie to implement the prefix tree
+class TrieNode {
+    Map<Character, TrieNode> children;
     boolean isEnd;
-    TrieNode[] neighbors;
-    public TrieNode(){
+    public TrieNode() {
+        children = new HashMap<>();
         isEnd = false;
-        neighbors = new TrieNode[26];
     }
 }
 class WordDictionary {
+    //. can match with any letter
     TrieNode root;
     public WordDictionary() {
         root = new TrieNode();
     }
     
     public void addWord(String word) {
-        TrieNode current = root;
-        for (int i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            if (current.neighbors[c - 'a'] == null) {
-                current.neighbors[c - 'a'] = new TrieNode();
+        TrieNode node = root;
+        for (char c: word.toCharArray()) {
+            if (!node.children.containsKey(c)) {
+                node.children.put(c, new TrieNode());
             }
-            current = current.neighbors[c - 'a'];
+            node = node.children.get(c);
         }
-        current.isEnd = true;
+        node.isEnd = true;
     }
     
     public boolean search(String word) {
+        //start from the 0th index, find if it contains
         return dfs(root, word, 0);
     }
-
     private boolean dfs(TrieNode node, String word, int index) {
-        //find the next node
-        if (index == word.length()) {
-            return node.isEnd;
-        }
-        //think it if it is . or just normal char
-        char c = word.charAt(index);
-        if (c == '.') {
-            //find all possible neighbors
-            for (int i = 0; i< 26; i++) {
-                if (node.neighbors[i] != null && dfs(node.neighbors[i], word, index + 1)){
-                    return true;
-                }
-            }
-            return false;
-        }else {
-            int charIndex = c - 'a';
-            if (node.neighbors[charIndex] == null) {
-                return false;
-            }
-            return dfs(node.neighbors[charIndex], word, index + 1);
-        }
+    // 1. 基准情况：如果已经遍历完单词长度
+    if (index == word.length()) {
+        return node.isEnd; // 必须返回当前节点是否是单词结尾
     }
+
+    char c = word.charAt(index);
+
+    if (c == '.') {
+        // 2. 通配符情况：遍历所有子节点
+        for (TrieNode child : node.children.values()) {
+            // 只要有一个分支返回 true，整个搜索就是 true
+            if (dfs(child, word, index + 1)) {
+                return true; 
+            }
+        }
+        // 注意：如果循环结束还没找到 true，这里必须返回 false
+        return false; 
+    } else {
+        // 3. 普通字符情况
+        TrieNode next = node.children.get(c);
+        if (next == null) {
+            return false; // 路径中断，直接返回 false
+        }
+        // 必须返回下一层递归的结果！
+        return dfs(next, word, index + 1); 
+    }
+}
 }
 
 /**
