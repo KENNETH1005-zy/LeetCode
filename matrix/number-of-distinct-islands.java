@@ -1,38 +1,31 @@
 class Solution {
-    int m;
-    int n;
     public int numDistinctIslands(int[][] grid) {
-        //the same shape islands are considered to be the same
-        //store the relative relationship of the parts
-        //use chars to store the islands
-        //same shape islands have the same string
-        m = grid.length;
-        n = grid[0].length;
-
-        Set<String> result = new HashSet<>();
-        boolean[][] seen = new boolean[m][n];
-
-        for (int i = 0; i<m; i++) {
-            for (int j = 0; j<n; j++) {
+        //only the different shape can be considered as the diff islands
+        //use lettes to name the islands
+        //L,R,U,D
+        //use set to store the string name islands
+        //return the set size
+        Set<String> set = new HashSet<>();
+        boolean[][] seen = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i<grid.length; i++) {
+            for (int j = 0; j<grid[0].length; j++) {
                 if (grid[i][j] == 0) continue;
-                StringBuilder current = new StringBuilder();
-                dfs(i, j, grid, seen, current);
-                if (current.length() == 0) continue;
-                result.add(current.toString());
+                StringBuilder sb = new StringBuilder();
+                dfs(i, j,seen, grid, sb );
+                if (sb.length() == 0) continue;
+                set.add(sb.toString());
             }
         }
-        return result.size();
-    }
-
-    public void dfs(int i, int j, int[][] grid, boolean[][] seen, StringBuilder current) {
-        //base case
-        if (i <0 || i >= m || j <0 || j >= n || seen[i][j] || grid[i][j] != 1) {
+        return set.size();
+    } 
+    public void dfs(int i, int j, boolean[][] seen, int[][] grid, StringBuilder sb) {
+        if (i <0 || i >= grid.length || j < 0 || j >= grid[0].length || seen[i][j] || grid[i][j] != 1) {
             return;
         }
         seen[i][j] = true;
-        dfs(i + 1, j, grid, seen, current.append('D'));
-        dfs(i, j + 1, grid, seen, current.append('R'));
-        dfs(i - 1, j, grid, seen, current.append('U'));
-        dfs(i, j - 1, grid, seen, current.append('L'));
+        dfs(i - 1, j, seen, grid, sb.append('U'));
+        dfs(i, j - 1, seen, grid, sb.append('L'));
+        dfs(i + 1, j, seen, grid, sb.append('D'));
+        dfs(i, j + 1, seen, grid, sb.append('R'));
     }
 }
