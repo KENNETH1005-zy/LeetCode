@@ -57,7 +57,7 @@ class LRUCache {
         if (map.size() > capacity) {
             Node delete = head.next;
             remove(delete);
-            map.remove(delete.value);
+            map.remove(delete.key);
         }
 
 
