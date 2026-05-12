@@ -1,19 +1,25 @@
 class Solution {
     public int subarraySum(int[] nums, int k) {
-        //use map tp store the count of the sum
-        //add the count if meets the multiple of the k
-        //return count
-        int count = 0;
-        int sum = 0;
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(0, 1);
-        for (int num: nums) {
-            sum += num;
-            if (map.containsKey(sum - k)) {
-                count += map.get(sum - k);
-            }
-            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        //use prefix sum array to store 
+        //prefix[i] means the sum before this index in nums
+        //use map to store the prefix sum
+        //{1,2,3} 
+        //{0, 1, 3, 6}
+        //iterate prefix sum, if map contains prefix - k
+        //add 1 to the result
+        int[] prefix = new int[nums.length + 1];
+        int result = 0;
+        Set<Integer> set = new HashSet<>();
+        prefix[0] = 0;
+        for (int i = 1; i<prefix.length; i++) {
+            prefix[i] = prefix[i - 1] + nums[i - 1];
         }
-        return count;
+        for (int i = 0; i<prefix.length; i++) {
+            if (set.contains(prefix[i] - k)) {
+                result++;
+            }
+            set.add(prefix[i]);
+        }
+        return result;
     }
 }
