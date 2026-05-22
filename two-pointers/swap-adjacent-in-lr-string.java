@@ -1,53 +1,36 @@
 class Solution {
     public boolean canTransform(String start, String result) {
-        //if the numbers of X are not the same, return false
-        //two pointer
-        //skip all the x
-        //if reach x at the same time return true
-        //if the char are not the same return false
-        //if char is r and the i > j, means cannot go right return false
-        //if char is l and i < j, return false
-        //return true at last
-        int n = start.length();
-        int i = 0;
-        int j = 0;
-        int count = 0;
-        while (i < n || j < n) {
-            if (i < n && start.charAt(i) == 'X') {
-                count++;
-            }
-            if (j <n && result.charAt(j) == 'X') {
-                count--;
-            }
-            i++;
-            j++;
-        }
-        if (count != 0) return false;
-        
-        i = 0;
-        j = 0;
-        while (i < n || j < n) {
-            while (i <n && start.charAt(i) == 'X') {
-                i++;
-            }
+        //L can only move left, and opposite as R
+        //record the relative order of L and R
+        //if the num of L or the number of R are not the same
+        //or the relative order is not correct return false
+        //otherwise return true
+        int countL = 0;
+        int countR = 0;
+        //a queue to store the r and l
+        Deque<Character> dq = new LinkedList<>();
+        for (int i = 0; i<start.length(); i++) {
+            char s = start.charAt(i);
 
-            while (j <n && result.charAt(j) == 'X') {
-                j++;
+            if (s == 'L' || s == 'R') {
+                dq.addLast(s);
+                if (s == 'L') countL++;
+                if (s == 'R') countR++;
             }
-            if (i == n && j == n) return true;
-
-            if (start.charAt(i) != result.charAt(j)) {
-                return false;
-            }
-            if (start.charAt(i) == 'R' && i > j) {
-                return false;
-            }
-            if (start.charAt(i) == 'L' && i < j) {
-                return false;
-            }
-            i++;
-            j++;
         }
+        for (char c: result.toCharArray()) {
+            if (c == 'L' || c == 'R') {
+                if (dq.isEmpty() || dq.peekFirst() != c) return false;
+                char polled = dq.pollFirst();
+                
+                if (polled == 'L') {
+                    countL--;
+                }else if (polled == 'R') {
+                    countR--;
+                }
+            }
+        }
+        if (countL != 0 || countR != 0) return false;
         return true;
     }
 }
