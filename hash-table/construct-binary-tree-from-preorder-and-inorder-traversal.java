@@ -14,39 +14,33 @@
  * }
  */
 class Solution {
+    int[] pIndex;
+    Map<Integer, Integer> map;
+    int[] preorder;
+    int[] inorder;
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        //a map to record the index in inOrder
-        //pass by value so use int[] to find the index in pOrder
-        //return dfs
-        Map <Integer, Integer> map = new HashMap<>();
-        for (int i = 0; i< inorder.length; i++) {
+        //map to store the index in inorder array
+        this.preorder = preorder;
+        this.inorder = inorder;
+        pIndex = new int[]{0};
+        map = new HashMap<>();
+        for (int i = 0; i<inorder.length; i++) {
             map.put(inorder[i], i);
         }
-
-        int[] pIndex = new int[]{0};
-        TreeNode result = dfs(0, inorder.length - 1, preorder, inorder, map, pIndex);
-        return result;
+        return dfs(0, inorder.length - 1);
     }
-    //dfs function to construct the result
-    //base case left > right, means no more left node to construct
-    //construct the current node
-    //if left == right, means it's leaf node, return the node
-    //find the node.left in left bound, which is left to current index - 1
-    //find the right node in the right bound, index + 1 in inorder to right
-    //return the root
-    public TreeNode dfs(int left, int right, int[] preorder, int[] inorder, Map<Integer, Integer> map, int[] pIndex) {
-        //base case
+    public TreeNode dfs(int left, int right) {
+        //left and right are bounds
         if (left > right) return null;
-        int curr = preorder[pIndex[0]];
+        int current = preorder[pIndex[0]];
+        TreeNode root = new TreeNode(current);
         pIndex[0]++;
-        TreeNode root = new TreeNode(curr);
-
+        //leaf node
         if (left == right) return root;
-        int inIndex = map.get(curr);
-
-        root.left = dfs(left, inIndex - 1, preorder, inorder, map, pIndex);
-        root.right = dfs(inIndex + 1, right, preorder, inorder, map, pIndex);
+        int iIndex = map.get(current);
+        
+        root.left = dfs(left, iIndex - 1);
+        root.right = dfs(iIndex + 1, right);
         return root;
     }
-
 }
