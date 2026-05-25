@@ -1,48 +1,57 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] ps) {
-        //must take b first then the a
-        //create a list for storing b for an a
-        //return true if not circle detected
-        //boolean array for inStack and seen
-        //for each numCourse, dfs to find if circle
-        //backtracking
-        List<List<Integer>> pres = new ArrayList<>();
+    //a -> b -> c, now a, b,c are we are searching
+    //if mean any of it again
+    //return false
+    //seen it before, means this one is valid, search for next
+    boolean[] inStack;
+    boolean[] seen;
+    List<List<Integer>> pres;
+    public boolean canFinish(int numCourses, int[][] press) {
+        //if there is circle return false
+        //list to store the precourses of a course
+        //course -> pres
+        pres = new ArrayList<>();
+        //use an array to store the size of pre courses of a course
+        //if no pre, means no pres to take
+        //{second, first}
+        //second inDegree is true
+        //if pre is one, means there is circle
+        inStack = new boolean[numCourses];
+        seen = new boolean[numCourses];
+        //implement the pres
         for (int i = 0; i<numCourses; i++) {
             pres.add(new ArrayList<>());
         }
-
-        for (int[] p: ps) {
-            pres.get(p[0]).add(p[1]);
+        for (int[] pre: press) {
+            int second = pre[0];
+            int first = pre[1];
+            pres.get(second).add(first);
         }
-        //in stack means there is a circle
-        boolean[] inStack = new boolean[numCourses];
-        boolean[] seen = new boolean[numCourses];
         for (int i = 0; i<numCourses; i++) {
-            if (dfs(i, pres, inStack, seen)) {
+            //if find circle return false
+            if (dfs(i)) {
                 return false;
             }
         }
         return true;
     }
-
-    public boolean dfs(int i, List<List<Integer>> pres, boolean[] inStack, boolean[] seen) {
-        //if in stack
+    public boolean dfs(int i) {
         if (inStack[i]) {
             return true;
         }
-        //seen it before, break the dfs to find others
         if (seen[i]) {
             return false;
         }
         inStack[i] = true;
         seen[i] = true;
-        //for the adj
+
+        //continue to validate the neighbors
         for (int neighbor: pres.get(i)) {
-            if (dfs(neighbor, pres, inStack, seen)) {
+            if (dfs(neighbor)) {
                 return true;
             }
         }
-        //backtracking remove from the stack
+        //remove from the stack
         inStack[i] = false;
         return false;
     }
