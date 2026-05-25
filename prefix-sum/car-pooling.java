@@ -1,15 +1,37 @@
 class Solution {
     public boolean carPooling(int[][] trips, int capacity) {
-        int[] distance = new int[1001];
+        //return true if in any time, the num of passengers are not more than cap
+        //use the last place to create an array
+        //in start index + current passengers
+        //if the to is smaller than the last index, 
+        //[to] -= passengers
+        //use sum to recored the total running passengers
+        //start over, update the [current] as the sum
+        //if any of it is more than cap, return false
+        //else return true
+        int last = 0;
         for (int[] trip: trips) {
-            distance[trip[1]] += trip[0];
-            distance[trip[2]] -= trip[0];
+            last = Math.max(last, trip[2]);
         }
-        int people = 0;
-        for (int temp: distance) {
-            people += temp;
-            if (people > capacity) return false;
+        int[] result = new int[last + 1];
+
+        for (int i = 0; i<trips.length; i++) {
+            int num = trips[i][0];
+            int start = trips[i][1];
+            int end = trips[i][2];
+            result[start] += num;
+            if (end < result.length - 1) {
+                result[end] -= num;
+            }
         }
-        return people <= capacity;
+        int sum = 0;
+        for (int i = 0; i<result.length; i++) {
+            sum += result[i];
+            result[i] = sum;
+            if (result[i] > capacity) {
+                return false;
+            }
+        }
+        return true;
     }
 }
