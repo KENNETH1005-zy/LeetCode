@@ -21,7 +21,8 @@ class Solution {
         //start from the current index find others 
         for (int i = index; i < candidates.length; i++) {
             list.add(candidates[i]);
-            dfs(i, list, target - candidates[i]);
+            int newT = target - candidates[i];
+            dfs(i, list, newT);
             list.remove(list.size() - 1);
         }
     }
