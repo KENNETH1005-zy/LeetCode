@@ -1,25 +1,27 @@
 class Solution {
     List<List<Integer>> result;
+    int[] candidates;
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        //combine the sum, if the sum is equal to the target
-        //dfs to add the target sum list
         result = new ArrayList<>();
-        dfs(0, candidates, target, new ArrayList<>());
+        //if added this new num is smaller than the target
+        //add the current num
+        //sort the array
+        //if the last one left is still not
+        this.candidates = candidates;
+        dfs(0, new ArrayList<>(), target);
         return result;
     }
-    public void dfs(int index, int[] candidates, int target, List<Integer> list) {
+    public void dfs(int index, List<Integer> list, int target) {
         //base case
         if (target < 0) {
             return;
-        }
-        else if (target == 0) {
+        }else if (target == 0) {
             result.add(new ArrayList<>(list));
-            return;
         }
-        for (int i = index; i<candidates.length; i++) {
+        //start from the current index find others 
+        for (int i = index; i < candidates.length; i++) {
             list.add(candidates[i]);
-            dfs(i, candidates, target - candidates[i], list);
-            //backtracking
+            dfs(i, list, target - candidates[i]);
             list.remove(list.size() - 1);
         }
     }
