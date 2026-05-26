@@ -13,7 +13,7 @@ class Solution {
         //result -= [mid] * (how many in the right) * (how many in the left)
         //it means the situations when mid num is the smallest one
         //in stack{0, 3, 5} then the num between 3,5 are all bigger than index 5
-        int result = 0;
+        long result = 0;
         Stack<Integer> stack = new Stack<>();
         int n = nums.length;
         //right could reach the end because when considering the last n - 1
