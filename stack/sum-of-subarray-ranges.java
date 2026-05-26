@@ -22,7 +22,7 @@ class Solution {
             while (!stack.isEmpty() && (right == n || nums[stack.peek()] >= nums[right])) {
                 int mid = stack.pop();
                 int left = stack.isEmpty() ? -1 : stack.peek();
-                result -= nums[mid] * (right - mid) * (mid - left);
+                result -= (long)nums[mid] * (right - mid) * (mid - left);
             }
             stack.push(right);
         }
@@ -31,7 +31,7 @@ class Solution {
             while (!stack.isEmpty() && (right == n || nums[stack.peek()] <= nums[right])) {
                 int mid = stack.pop();
                 int left = stack.isEmpty() ? -1 : stack.peek();
-                result += nums[mid] * (right - mid) * (mid - left);
+                result += (long)nums[mid] * (right - mid) * (mid - left);
             }
             stack.push(right);
         }
