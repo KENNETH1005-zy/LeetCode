@@ -14,30 +14,20 @@
  * }
  */
 class Solution {
-    //global sum to record the overall max sum
-    int[] result;
+    int result= Integer.MIN_VALUE;
     public int maxPathSum(TreeNode root) {
-        result= new int[1];
-        result[0] = Integer.MIN_VALUE;
         dfs(root);
-        return result[0];
+        return result;
     }
-
-    //find the max sum in each recursion
     public int dfs(TreeNode node) {
         //base case
         if (node == null) {
             return 0;
         }
-
-        int left = dfs(node.left);
-        int right = dfs(node.right);
-        left = Math.max(0, left);
-        right = Math.max(0, right);
-        //include the current node
-        result[0] = Math.max(result[0], node.val + left + right);
-        //or exclude chose the bigger path between left and right
-        return Math.max(node.val + left, node.val + right);
-
+        //whether the max path is the left
+        int left = Math.max(dfs(node.left), 0);
+        int right = Math.max(dfs(node.right), 0);
+        result = Math.max(result, left + right + node.val);
+        return Math.max(left + node.val, right + node.val);
     }
 }
