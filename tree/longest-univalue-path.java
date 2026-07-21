@@ -21,10 +21,10 @@ class Solution {
         //if values are all the same
         //the max length is left longest + right longest + current node
         //return the left length + current one(just one) or right length
-        dfs(root, root.val);
+        dfs(root);
         return result;
     }
-    public int dfs(TreeNode node, int parent) {
+    public int dfs(TreeNode node) {
         //base case
         //if current node is null return 0
         //only return the length if values are the same
@@ -32,9 +32,8 @@ class Solution {
             return 0;
         }
         //the left and right longest from the children
-        int left = dfs(node.left, node.val);
-        int right = dfs(node.right, node.val);
-        
+        int left = dfs(node.left);
+        int right = dfs(node.right);
         int leftOne = 0;
         int rightOne = 0;
         if (node.left != null && node.left.val == node.val) {
