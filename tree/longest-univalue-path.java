@@ -14,7 +14,7 @@
  * }
  */
 class Solution {
-    int result = 1;
+    int result = 0;
     public int longestUnivaluePath(TreeNode root) {
         //longest path for the same value
         //basic is 1
