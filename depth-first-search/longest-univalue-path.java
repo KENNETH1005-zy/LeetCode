@@ -22,7 +22,7 @@ class Solution {
         //the max length is left longest + right longest + current node
         //return the left length + current one(just one) or right length
         dfs(root, root.val);
-        return result - 1;
+        return result;
     }
     public int dfs(TreeNode node, int parent) {
         //base case
@@ -31,17 +31,20 @@ class Solution {
         if (node == null) {
             return 0;
         }
-        //return to last recursion only if it has the same value as the parent node
+        //the left and right longest from the children
         int left = dfs(node.left, node.val);
         int right = dfs(node.right, node.val);
-        //if left node or right node has the same value to current node
-        //left or right node add 1
-        //if left or right node are all the same, return left + right + 1
-        //return longer one of left or right to the last recursion
-        result = Math.max(result, left + right + 1);
-        if (node.val == parent) {
-            return Math.max(left, right) + 1;
+        
+        int leftOne = 0;
+        int rightOne = 0;
+        if (node.left != null && node.left.val == node.val) {
+            leftOne = left + 1;
         }
-        return 0;
+        if (node.right != null && node.right.val == node.val) {
+            rightOne = right + 1;
+        }
+        result = Math.max(result, leftOne + rightOne);
+        //return the longest to the last recursion
+        return Math.max(leftOne, rightOne);
     }
 }
