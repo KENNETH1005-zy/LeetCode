@@ -14,24 +14,22 @@
  * }
  */
 class Solution {
+    //list to store the result
+    List<Integer> result;
     public List<Integer> rightSideView(TreeNode root) {
-        if (root == null) return new ArrayList<>();
-        List<Integer> result = new ArrayList<>();
-        //store the level treenodes
-        //in a queue
-        //bfs
-        //each level, poll the last one
-        Deque<TreeNode> dq = new LinkedList<>();
-        dq.addLast(root);
-        while (!dq.isEmpty()) {
-            int size = dq.size();
-            for (int i = 0; i<size; i++) {
-                TreeNode node = dq.pollFirst();
-                if (node.left != null) dq.addLast(node.left);
-                if (node.right != null) dq.addLast(node.right);
-                if (i == size - 1) result.add(node.val);
-            }
+        result = new ArrayList<>();
+        if (root == null) {
+            return new ArrayList<>();
         }
+        //use the size of result as the level index
+        dfs(root, 0);
         return result;
+    }
+    public void dfs(TreeNode node, int level) {
+        if (level == result.size()) {
+            result.add(node.val);
+        }
+        if (node.right != null) dfs(node.right, level + 1);
+        if (node.left != null) dfs(node.left, level + 1);
     }
 }
